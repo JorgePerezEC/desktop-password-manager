@@ -4,12 +4,13 @@ from tkinter import BOTH
 class LoginPage(ctk.CTkFrame):
     def __init__(self, parent, on_login):
         super().__init__(parent)
-
         self.parent = parent
+        # self.parent.geometry('%dx%d+%d+%d' % (self.parent.width, self.parent.height, 0, 0))
         self.on_login = on_login
         # self.pack(fill=BOTH, expand=True)
-        self.grid(row=1, column=0, sticky="ns")
+        self.grid(row=1, column=0, sticky="nsew")
         self.create_widgets()
+        self.username_entry.focus_set()
 
     def create_widgets(self):
         self.login_label = ctk.CTkLabel(self, text="PASSWORD MANAGER\nLogin Page", font=ctk.CTkFont(size=20, weight="bold"))

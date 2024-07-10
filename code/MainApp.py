@@ -5,6 +5,7 @@ import os
 from components.login_page import LoginPage
 from components.main_page import MainPage
 
+
 class App(customtkinter.CTk):
     width = 1000
     height = 700
@@ -19,11 +20,14 @@ class App(customtkinter.CTk):
         self.minimized = False
         self.maximized = False
 
-        current_path = os.path.dirname(os.path.realpath(__file__))
-        self.bg_image = customtkinter.CTkImage(Image.open(current_path + "/img/background.jpg"), size=(self.width, self.height))
-        self.bg_image_label = customtkinter.CTkLabel(self, image=self.bg_image)
-        self.bg_image_label.grid(row=1, column=0, sticky="nsew")
+        
+        self.geometry('%dx%d+%d+%d' % (self.width, self.height, 0, 0))
+        # current_path = os.path.dirname(os.path.realpath(__file__))
+        # self.bg_image = customtkinter.CTkImage(Image.open(current_path + "/img/background.jpg"), size=(self.width, self.height))
+        # self.bg_image_label = customtkinter.CTkLabel(self, image=self.bg_image)
+        # self.bg_image_label.grid(row=1, column=0, sticky="nsew")
 
+        # Custom App bar
         self.title_bar = customtkinter.CTkFrame(self, height=20, fg_color="#2A3D62")
         self.title_bar.grid(row=0, column=0, sticky="ew")
 
@@ -36,10 +40,20 @@ class App(customtkinter.CTk):
         self.title_bar.bind("<ButtonPress-1>", self.start_move)
         self.title_bar.bind("<B1-Motion>", self.do_move)
 
-        self.login_page = LoginPage(self, self.show_main_page)
+        # Configuración de las páginas
         self.main_page = MainPage(self, self.show_login_page)
+        self.main_page.grid(row=1, column=0, sticky="nsew")
 
-        # self.show_login_page()
+        self.login_page = LoginPage(self, self.show_main_page)
+        self.login_page.grid(row=1, column=0, sticky="nsew")
+
+        # Configuración del grid para expandir las páginas
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
+        # Mostrar la página de login al iniciar
+        self.login_page.tkraise()
+
 
         self.bind("<FocusIn>", self.deminimize)
         self.after(10, lambda: self.set_app_window(self))
@@ -57,14 +71,14 @@ class App(customtkinter.CTk):
         self.after(10, lambda: self.wm_deiconify())
 
     def show_login_page(self):
-        self.main_page.pack_forget()
-        # self.login_page.pack(fill="both", expand=True)
-        self.login_page.grid(row=1, column=0, sticky="ns")
+        # print("SHOWING LOGIN")
+        # self.main_page.pack_forget() # close main screen
+        self.login_page.tkraise()
 
 
     def show_main_page(self):
-        self.login_page.pack_forget()
-        self.main_page.grid(row=1, column=0, sticky="nsew", padx=100)
+        # self.login_page.pack_forget()
+        self.main_page.tkraise()
         
     def close(self):
         self.destroy()
