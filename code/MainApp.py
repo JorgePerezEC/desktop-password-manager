@@ -1,13 +1,11 @@
-import customtkinter as ctk
-from tkinter import *
-from ctypes import windll
+import customtkinter
 from PIL import Image
+from ctypes import windll
 import os
-
 from components.login_page import LoginPage
 from components.main_page import MainPage
 
-class App(ctk.CTk):
+class App(customtkinter.CTk):
     width = 1000
     height = 700
 
@@ -15,41 +13,34 @@ class App(ctk.CTk):
         super().__init__(*args, **kwargs)
 
         self.title("ISTER Password Manager")
-        self.overrideredirect(True)
         self.center_window()
         self.resizable(False, False)
+        self.overrideredirect(True)
         self.minimized = False
         self.maximized = False
 
-        # load and create background image
         current_path = os.path.dirname(os.path.realpath(__file__))
-        self.bg_image = ctk.CTkImage(Image.open(current_path + "/img/background.jpg"),
-                                               size=(self.width, self.height))
-        self.bg_image_label = ctk.CTkLabel(self, image=self.bg_image)
+        self.bg_image = customtkinter.CTkImage(Image.open(current_path + "/img/background.jpg"), size=(self.width, self.height))
+        self.bg_image_label = customtkinter.CTkLabel(self, image=self.bg_image)
         self.bg_image_label.grid(row=1, column=0, sticky="nsew")
 
-        self.create_title_bar()
+        self.title_bar = customtkinter.CTkFrame(self, height=20, fg_color="#2A3D62")
+        self.title_bar.grid(row=0, column=0, sticky="ew")
 
-        self.login_page = LoginPage(self)
-        self.login_page.grid(row=1, column=0, sticky="nsew")
-    
-    def create_title_bar(self):
-        title_bar = ctk.CTkFrame(self, height=20, bg_color="#2A3D62")
-        title_bar.grid(row=0, column=0, sticky="ew")
-        # Add custom buttons to the title bar
-        minimize_button = ctk.CTkButton(title_bar, text="", width=14, height=14, command=self.minimize, corner_radius=7, fg_color="#61C554", hover_color="#448F3A")
-        minimize_button.pack(side='left', padx=5, pady=5)
+        self.minimize_button = customtkinter.CTkButton(self.title_bar, text="", width=14, height=14, command=self.minimize, corner_radius=7, fg_color="#61C554", hover_color="#448F3A")
+        self.minimize_button.pack(side='left', padx=5, pady=5)
 
-        close_button = ctk.CTkButton(title_bar, text="", width=14, height=14, command=self.close, corner_radius=7, fg_color="#ED695E", hover_color="#DA4C40")
-        close_button.pack(side='left', padx=2, pady=5)
+        self.close_button = customtkinter.CTkButton(self.title_bar, text="", width=14, height=14, command=self.close, corner_radius=7, fg_color="#ED695E", hover_color="#DA4C40")
+        self.close_button.pack(side='left', padx=2, pady=5)
 
-        # Allow dragging the window
-        title_bar.bind("<ButtonPress-1>", self.start_move)
-        title_bar.bind("<B1-Motion>", self.do_move)
-        title_bar_title = ctk.CTkLabel(title_bar, text=self.title, bg_color="#10121f", fg_color='white', font=("helvetica", 10))
-        title_bar_title.pack(side=LEFT, padx=10)
+        self.title_bar.bind("<ButtonPress-1>", self.start_move)
+        self.title_bar.bind("<B1-Motion>", self.do_move)
 
-        # Some settings Important to show app
+        self.login_page = LoginPage(self, self.show_main_page)
+        self.main_page = MainPage(self, self.show_login_page)
+
+        # self.show_login_page()
+
         self.bind("<FocusIn>", self.deminimize)
         self.after(10, lambda: self.set_app_window(self))
 
@@ -65,6 +56,16 @@ class App(ctk.CTk):
         self.wm_withdraw()
         self.after(10, lambda: self.wm_deiconify())
 
+    def show_login_page(self):
+        self.main_page.pack_forget()
+        # self.login_page.pack(fill="both", expand=True)
+        self.login_page.grid(row=1, column=0, sticky="ns")
+
+
+    def show_main_page(self):
+        self.login_page.pack_forget()
+        self.main_page.grid(row=1, column=0, sticky="nsew", padx=100)
+        
     def close(self):
         self.destroy()
 
@@ -78,6 +79,8 @@ class App(ctk.CTk):
         if self.minimized:
             self.minimized = False
             self.return_to_taskbar()
+
+    # Window manipulation methods
 
     def return_to_taskbar(self):
         self.overrideredirect(True)
@@ -94,14 +97,11 @@ class App(ctk.CTk):
     def center_window(self):
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
+
         x = (screen_width - self.width) // 2
         y = (screen_height - self.height) // 2
-        self.geometry(f"{self.width}x{self.height}+{x}+{y}")
 
-    def show_main_page(self):
-        self.login_page.grid_forget()
-        self.main_page = MainPage(self)
-        self.main_page.grid(row=1, column=0, sticky="nsew")
+        self.geometry(f"{self.width}x{self.height}+{x}+{y}")
 
 if __name__ == "__main__":
     app = App()

@@ -1,27 +1,29 @@
 import customtkinter as ctk
-from tkinter import BOTH, LEFT, RIGHT, X
+from tkinter import BOTH
 
 class LoginPage(ctk.CTkFrame):
-    def __init__(self, parent):
+    def __init__(self, parent, on_login):
         super().__init__(parent)
 
         self.parent = parent
+        self.on_login = on_login
+        # self.pack(fill=BOTH, expand=True)
         self.grid(row=1, column=0, sticky="ns")
         self.create_widgets()
 
     def create_widgets(self):
-        self.label = ctk.CTkLabel(self, text="PASSWORD MANAGER\nLogin Page", 
-                                  font=ctk.CTkFont(size=20, weight="bold"))
-        self.label.grid(row=0, column=0, padx=30, pady=(150, 15))
+        self.login_label = ctk.CTkLabel(self, text="PASSWORD MANAGER\nLogin Page", font=ctk.CTkFont(size=20, weight="bold"))
+        self.login_label.pack(pady=20)
 
         self.username_entry = ctk.CTkEntry(self, width=200, placeholder_text="Username")
-        self.username_entry.grid(row=1, column=0, padx=30, pady=(15, 15))
-        self.password_entry = ctk.CTkEntry(self, width=200, show="*", placeholder_text="Password")
-        self.password_entry.grid(row=2, column=0, padx=30, pady=(0, 15))
-        self.login_button = ctk.CTkButton(self, text="Login", command=self.login, width=200)
-        self.login_button.grid(row=3, column=0, padx=30, pady=(15, 15))
+        self.username_entry.pack(pady=10)
 
-    def login(self):
-        # Aquí puedes añadir la lógica de autenticación
-        self.grid_forget()
-        self.parent.show_main_page()
+        self.password_entry = ctk.CTkEntry(self, width=200, show="*", placeholder_text="Password")
+        self.password_entry.pack(pady=10)
+
+        self.login_button = ctk.CTkButton(self, text="Login", command=self.login_event, width=200)
+        self.login_button.pack(pady=10)
+
+    def login_event(self):
+        print("Login pressed - username:", self.username_entry.get(), "password:", self.password_entry.get())
+        self.on_login()
