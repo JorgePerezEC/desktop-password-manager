@@ -12,7 +12,7 @@ cd desktop-password-manager
 cd code
 ```
 
-## 2. Configurar el Entorno Virtual
+## 2. Configurar el Entorno Virtual (OPCIONAL)
 
 Se recomienda usar entorno virtual para gestionar las dependencias del proyecto.
 
