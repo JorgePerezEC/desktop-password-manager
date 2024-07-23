@@ -7,8 +7,8 @@
 Clona el repositorio desde GitHub:
 
 ```sh
-git clone [<URL_DEL_REPOSITORIO>](https://github.com/JorgePerezEC/desktop-password-manager.git)
-cd <NOMBRE_DEL_REPOSITORIO>(desktop-password-manager)
+git clone https://github.com/JorgePerezEC/desktop-password-manager.git
+cd desktop-password-manager
 cd code
 ```
 
