@@ -77,7 +77,7 @@ git checkout -b test_feature
 
 ## 3. Realizar Cambios y Commit
 
-Haz los cambios necesarios en tu código y luego realiza un commit para registrar estos cambios en tu rama:
+Implementa las pruebas (tests) solicitadas en los archivos de la carpeta `test` y luego realiza un commit para registrar estos cambios en tu rama:
 
 ```sh
 git add .
