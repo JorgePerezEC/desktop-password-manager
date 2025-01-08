@@ -1,5 +1,7 @@
 ﻿# PERSONAL DESKTOP PASSWORD MANAGER
 
+Autor Original: Ing. Jorge Pérez (Planteó la idea del programa, tomó los requerimientos, diseñó la BD, y escribió parte de código del frontend)
+
 # ⚙️Instalación y Configuración 
 
 ## 1. Clonar el Repositorio
